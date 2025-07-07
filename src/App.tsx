@@ -1,11 +1,25 @@
-import React from 'react';
+import '@radix-ui/themes/styles.css';
+import { Theme } from '@radix-ui/themes';
+import SliderBar from './components/Slidebar';
+import { Outlet } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
-const App: React.FC = () => {
+
+function App() {
+
+ 
+
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <div>
+      <Theme>
+      <SliderBar  /> 
+      <Outlet/>
+        
+      </Theme>
+
+      <Toaster/>
+    </div>
   );
-};
+}
 
 export default App;
