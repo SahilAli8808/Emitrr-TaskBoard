@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Table from "../components/Table/Table"; // Assuming Table is the custom table
+import Table from "../components/Table/Table";
 import EmptyBoardState from "../components/EmptyBoardState";
+import { Modal, ModalContent } from '../components/Modal/Modal';
+import toast from "react-hot-toast";
 
 interface Board {
   id: string;
@@ -12,25 +14,38 @@ interface Board {
 const BoardView: React.FC = () => {
   const [boards, setBoards] = useState<Board[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [formData, setFormData] = useState({ name: "", description: "" });
 
   useEffect(() => {
     const storedBoards = localStorage.getItem("boards");
     if (storedBoards) {
       setBoards(JSON.parse(storedBoards));
     }
+    // toast.success("hi")
   }, []);
 
   const handleCreateBoard = () => {
+    setModalOpen(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
     const newBoard: Board = {
       id: Date.now().toString(),
-      name: `Board ${boards.length + 1}`,
-      description: "This is a new board",
-      createdAt: new Date().toISOString(),
+      name: formData.name,
+      description: formData.description,
+      createdAt: new Date().toLocaleString(),
     };
 
     const updatedBoards = [...boards, newBoard];
     setBoards(updatedBoards);
     localStorage.setItem("boards", JSON.stringify(updatedBoards));
+    toast.success("Board Created Successfully!")
+    
+    setFormData({ name: "", description: "" });
+    setModalOpen(false);
   };
 
   const headers = [
@@ -44,7 +59,9 @@ const BoardView: React.FC = () => {
       <header className="flex items-center justify-between mb-6">
         <div>
           <h4 className="text-2xl font-bold text-gray-800">Task Boards Details</h4>
-          <p className="text-gray-600 text-sm">Manage your projects and organize tasks efficiently</p>
+          <p className="text-gray-600 text-sm">
+            Manage your projects and organize tasks efficiently
+          </p>
         </div>
         <button
           onClick={handleCreateBoard}
@@ -54,6 +71,28 @@ const BoardView: React.FC = () => {
         </button>
       </header>
 
+     <Modal open={modalOpen} onOpenChange={setModalOpen}>
+  <ModalContent
+    title="Create New Board"
+    onSubmit={(data) => {
+      const newBoard = {
+        id: Date.now().toString(),
+        name: data.name,
+        description: data.description,
+        createdAt: new Date().toLocaleString(),
+      };
+      const updatedBoards = [...boards, newBoard];
+
+      setBoards(updatedBoards);
+      localStorage.setItem("boards", JSON.stringify(updatedBoards));
+      toast.success("Board Created Successfully!")
+      setFormData({ name: "", description: "" });
+      setModalOpen(false);
+    }}
+  />
+</Modal>
+
+
       {boards.length === 0 ? (
         <EmptyBoardState onCreateBoardClick={handleCreateBoard} />
       ) : (
@@ -62,7 +101,7 @@ const BoardView: React.FC = () => {
           headers={headers}
           top={null}
           loading={loading}
-          rowPath={"/boards"} // optional, if you want clickable board name
+          rowPath={"/boards"}
           showPagination={true}
           showSearch={true}
         />
