@@ -43,7 +43,7 @@ const BoardView: React.FC = () => {
     <div className="min-h-screen px-6 py-4 bg-white">
       <header className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Task Boards</h1>
+          <h4 className="text-2xl font-bold text-gray-800">Task Boards Details</h4>
           <p className="text-gray-600 text-sm">Manage your projects and organize tasks efficiently</p>
         </div>
         <button

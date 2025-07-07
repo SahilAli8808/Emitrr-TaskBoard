@@ -31,7 +31,7 @@ const Pagination: React.FC<PaginationProps> = ({ pagination, rows, i, query }) =
       disabled={disabled}
       style={{ border: '1px solid grey' }}
       className={`px-3 py-2 ${
-        pageNum === currPage ? 'bg-indigo-600 text-white hover:bg-indigo-500' : 'bg-white-200 hover:bg-indigo-100 hover:cursor-pointer'
+        pageNum === currPage ? 'bg-yellow-400 text-white hover:bg-yellow-300' : 'bg-white-200 hover:bg-yellow-300 hover:cursor-pointer'
       }`}
       onClick={() => typeof pageNum === 'number' && setCurrPage(pageNum)}
     >
@@ -79,7 +79,7 @@ const Pagination: React.FC<PaginationProps> = ({ pagination, rows, i, query }) =
         <button
           style={{ border: '1px solid grey' }}
           className={`${
-            currPage === 1 ? 'cursor-default hover:bg-gray-200' : 'hover:bg-indigo-400 hover:cursor-pointer'
+            currPage === 1 ? 'cursor-default hover:bg-gray-200' : 'hover:bg-yellow-400 hover:cursor-pointer'
           } text-gray-800 py-2 px-4 rounded-l`}
           onClick={prevPage}
           disabled={currPage === 1}
@@ -90,7 +90,7 @@ const Pagination: React.FC<PaginationProps> = ({ pagination, rows, i, query }) =
         <button
           style={{ border: '1px solid grey' }}
           className={`${
-            currPage === pages ? 'cursor-default hover:bg-gray-200' : 'hover:bg-indigo-400 hover:cursor-pointer'
+            currPage === pages ? 'cursor-default hover:bg-gray-200' : 'hover:bg-yellow-400 hover:cursor-pointer'
           } text-gray-800 py-2 px-4 rounded-r`}
           onClick={nextPage}
           disabled={currPage === pages}
