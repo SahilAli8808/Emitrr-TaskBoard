@@ -6,7 +6,7 @@ import './index.css'
 
 import {createBrowserRouter,  RouterProvider,} from "react-router-dom";
 import Dashboard from './pages/Dashboard.js';
-import BoardDetail from './pages/BoardDetail.js';
+import BoardPage from './pages/BoardPage.js';
 import { BoardProvider } from './context/BoardContext.js';
 
 
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <Dashboard/>,
       },
-      { path: "/boards/:id", element: <BoardDetail /> } 
+      { path: "/boards/:id", element: <BoardPage/> } 
     ]
   },
   

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { RxDashboard, RxHamburgerMenu } from "react-icons/rx";
-import { CiImport } from "react-icons/ci";
+import { CiImport, CiSettings } from "react-icons/ci";
 import { FaStreetView } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 import TopBar from './Topbar';
+import { FiSettings } from 'react-icons/fi';
+import { BiTask } from 'react-icons/bi';
 
 interface MenuItem {
   title: string;
@@ -18,7 +20,7 @@ interface MenuListProps {
 
 const Sidebar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(true);
-  const isAuthorized = false;
+  const isAuthorized = true;
 
   // Hook to detect screen width
   const useMediaQuery = (width: number): boolean => {
@@ -51,7 +53,8 @@ const Sidebar: React.FC = () => {
 
   const NavMenu: MenuItem[] = [
     { title: "Dashboard", path: '/', icon: <RxDashboard /> },
-    { title: "Import Alumni", path: '/bulkimport', icon: <CiImport /> },
+    { title: "My Tasks", path: '/mytask', icon: <BiTask/> },
+    { title: "Settings", path: '/Setting', icon: <FiSettings /> },
   ];
 
   const MastersMenu: MenuItem[] = [
@@ -59,7 +62,7 @@ const Sidebar: React.FC = () => {
   ];
 
   const MenuList: React.FC<MenuListProps> = ({ list, listTitle }) => (
-    <div className='flex flex-col mb-3'>
+    <div className='flex flex-col mb-3 mt-2'>
       <div className={`flex text-xs p-2 text-slate-500 -ml-2 ${!open && 'text-white hover:cursor-default'}`}>{listTitle}</div>
       {list.map((item, index) => (
         <NavLink
@@ -89,8 +92,8 @@ const Sidebar: React.FC = () => {
           className={`hover:cursor-pointer w-7 h-6 rounded-full fixed mb-2 top-4 ${open ? "left-[190px]" : "left-[90px]"} duration-300`}
           onClick={() => setOpen(prev => !prev)}
         />
-        <MenuList list={NavMenu} listTitle={''} />
-        {isAuthorized && <MenuList list={MastersMenu} listTitle={'Masters'} />}
+        <MenuList list={NavMenu} listTitle={'Navigation'} />
+        {isAuthorized && <MenuList list={MastersMenu} listTitle={'Settings'} />}
       </div>
     </>
   );

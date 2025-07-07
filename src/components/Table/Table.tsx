@@ -81,7 +81,7 @@ const Table: React.FC<TableProps> = ({
               pagination.records.map((row, rowIndex) => (
                 <tr
                   key={rowIndex}
-                  className="hover:bg-yellow-50 transition border-b"
+                  className="hover:bg-slate-50 transition border-b"
                 >
                   {headers.map(({ accessor }, colIndex) =>
                     colIndex === 0 && rowPath ? (

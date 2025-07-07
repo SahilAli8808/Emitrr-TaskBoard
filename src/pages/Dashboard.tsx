@@ -16,37 +16,16 @@ function Dashboard() {
 
      
 
-
-      const dashData = {
-        totalAlumnino: 10,
-        employedAlumni: 20,
-        unemployedAlumni: 30,
-        totalIndustries: 30
-      }
-
   return (
-    <div>
+
        <>
       <div className='flex flex-col pt-16 p-4'>
         <Breadcrumbs items={breadcrumbsItems} />
-  
-        {/* <div className="flex flex-wrap">
-          <DashboardCard loading={false} bgColor="#0073B7" icon={<FiSettings  />} value="Total Alumni" additionalField={dashData.totalAlumnino} description="No. of Registered Alumni"  />
-          <DashboardCard loading={false} bgColor="#00C0EF" icon={<FaUserAstronaut  />} value="Total Employed " additionalField={dashData.employedAlumni} description="No. of Employed Alumni" />
-          <DashboardCard loading={false} bgColor="#F39C12" icon={<FaUserGraduate  />} value="Total Unemployed" additionalField={dashData.unemployedAlumni} description="No. of Unemployed "  />
-          <DashboardCard loading={false} bgColor="#00A65A" icon={<RiAlarmWarningLine  />} value="Total Industries" additionalField={dashData.totalIndustries} description="No. of Total Industry"  />
-        </div> */}
-
-
+         <hr className="my-1 border-t-1 border-dashed border-gray-300" />
      <BoardView/>
 
-
-      <div>
-
-      </div>
-      </div>
-    </>
     </div>
+    </>
   )
 }
 

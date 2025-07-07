@@ -25,26 +25,36 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const persistBoard = (updated: Board) => {
     const allBoards: Board[] = JSON.parse(localStorage.getItem("boards")!);
     const other = allBoards.filter(b => b.id !== updated.id);
-    localStorage.setItem("boards", JSON.stringify([...other, updated]));
-    setBoard(updated);
+    const safeBoard = {
+      ...updated,
+      columns: updated.columns ?? [],
+    };
+    localStorage.setItem("boards", JSON.stringify([...other, safeBoard]));
+    setBoard(safeBoard);
   };
 
   const loadBoard = (id: string) => {
     const allBoards: Board[] = JSON.parse(localStorage.getItem("boards")!);
-    setBoard(allBoards.find(b => b.id === id));
+    const found = allBoards.find(b => b.id === id);
+    if (found) {
+      setBoard({
+        ...found,
+        columns: found.columns ?? [],
+      });
+    }
   };
 
   const addColumn = (name: string) => {
     if (!board) return;
     const col: Column = { id: Date.now().toString(), name, tasks: [] };
-    persistBoard({ ...board, columns: [...board.columns, col] });
+    persistBoard({ ...board, columns: [...(board.columns ?? []), col] });
   };
 
   const deleteColumn = (colId: string) => {
     if (!board) return;
     persistBoard({
       ...board,
-      columns: board.columns.filter(c => c.id !== colId),
+      columns: (board.columns ?? []).filter(c => c.id !== colId),
     });
   };
 
@@ -57,7 +67,7 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
     persistBoard({
       ...board,
-      columns: board.columns.map(c =>
+      columns: (board.columns ?? []).map(c =>
         c.id === colId ? { ...c, tasks: [...c.tasks, newTask] } : c
       ),
     });
@@ -67,7 +77,7 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (!board) return;
     persistBoard({
       ...board,
-      columns: board.columns.map(c =>
+      columns: (board.columns ?? []).map(c =>
         c.id === colId
           ? {
               ...c,
@@ -87,15 +97,21 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     newIndex: number
   ) => {
     if (!board) return;
-    const from = board.columns.find(c => c.id === fromCol)!;
-    const task = from.tasks.find(t => t.id === taskId)!;
+
+    const from = (board.columns ?? []).find(c => c.id === fromCol);
+    const to = (board.columns ?? []).find(c => c.id === toCol);
+    if (!from || !to) return;
+
+    const task = from.tasks.find(t => t.id === taskId);
+    if (!task) return;
+
     const without = from.tasks.filter(t => t.id !== taskId);
-    const to = board.columns.find(c => c.id === toCol)!;
     const inserted = [...to.tasks];
     inserted.splice(newIndex, 0, task);
+
     persistBoard({
       ...board,
-      columns: board.columns.map(c =>
+      columns: (board.columns ?? []).map(c =>
         c.id === fromCol
           ? { ...c, tasks: without }
           : c.id === toCol
@@ -109,7 +125,7 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (!board) return;
     persistBoard({
       ...board,
-      columns: board.columns.map(c =>
+      columns: (board.columns ?? []).map(c =>
         c.id === colId
           ? { ...c, tasks: c.tasks.filter(t => t.id !== taskId) }
           : c
@@ -119,7 +135,16 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   return (
     <BoardContext.Provider
-      value={{ board, loadBoard, addColumn, deleteColumn, addTask, updateTask, moveTask, deleteTask }}
+      value={{
+        board,
+        loadBoard,
+        addColumn,
+        deleteColumn,
+        addTask,
+        updateTask,
+        moveTask,
+        deleteTask,
+      }}
     >
       {children}
     </BoardContext.Provider>
