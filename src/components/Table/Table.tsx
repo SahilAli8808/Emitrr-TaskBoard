@@ -42,7 +42,7 @@ const Table: React.FC<TableProps> = ({
   }
 
   return (
-    <div className="p-4 bg-white rounded border border-gray-100">
+    <div className="p-4 bg-white rounded border shadow-sm border-gray-100">
       <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
         {showPagination && <Entries pagination={pagination} />}
         {showSearch && <SearchInput query={query} setQuery={setQuery} />}
