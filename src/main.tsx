@@ -6,6 +6,8 @@ import './index.css'
 
 import {createBrowserRouter,  RouterProvider,} from "react-router-dom";
 import Dashboard from './pages/Dashboard.js';
+import BoardDetail from './pages/BoardDetail.js';
+import { BoardProvider } from './context/BoardContext.js';
 
 
 
@@ -17,7 +19,8 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Dashboard/>,
-      }
+      },
+      { path: "/boards/:id", element: <BoardDetail /> } 
     ]
   },
   
@@ -25,7 +28,9 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <BoardProvider>
+      <RouterProvider router={router} />
+    </BoardProvider>
   </StrictMode>,
 )
 
