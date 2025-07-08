@@ -220,7 +220,14 @@ const BoardDetail: React.FC = () => {
 
   return (
     <div className="p-6 m-4 min-h-screen">
-      <h1 className="text-xl font-bold mb-6 text-gray-800">{board.name}</h1>
+        <h1 className="text-2xl font-extrabold text-gray-900 mb-1 tracking-tight">
+    {board.name}
+  </h1>
+  {board.description && (
+    <p className="text-gray-700 text-base leading-relaxed">
+      {board.description}
+    </p>
+  )}
 
       <div className="flex gap-4 mb-6 items-center flex-wrap bg-white p-4 rounded-lg shadow-sm">
         <div className="relative">
@@ -284,7 +291,7 @@ const BoardDetail: React.FC = () => {
             onDrop={(e) => handleColumnDrop(e, col.id)}
           >
             <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="font-semibold text-lg text-gray-800">{col.name}</h2>
+              <h2 className="font-semibold text-lg text-gray-800">{col.name} </h2>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEditColumn(col)}
