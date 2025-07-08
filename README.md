@@ -87,6 +87,10 @@ Open `http://localhost:5173` in your browser.
 ✅ Responsive layout with toast alerts
 ✅ "My Tasks" and "Settings" pages
 
+## Requirements Checklist
+
+![Requirement](https://github.com/SahilAli8808/Emitrr-TaskBoard/blob/main/Screenshots/req.png)
+
 ---
 
 ## 🧪 Evaluation Highlights
