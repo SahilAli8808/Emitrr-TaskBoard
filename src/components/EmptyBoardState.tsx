@@ -1,6 +1,6 @@
 import { Button } from "@radix-ui/themes";
 import React from "react";
-import { BiRightArrow, BiRightArrowAlt } from "react-icons/bi";
+import { BiRightArrowAlt } from "react-icons/bi";
 
 interface Props {
   onCreateBoardClick: () => void;

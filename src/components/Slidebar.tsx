@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { RxDashboard, RxHamburgerMenu } from "react-icons/rx";
-import { CiImport, CiSettings } from "react-icons/ci";
 import { FaStreetView } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 import TopBar from './Topbar';

@@ -1,5 +1,4 @@
 import React from "react";
-import { PiStudentDuotone } from "react-icons/pi";
 import logo from "../assets/img/logo-emitrr.webp"; // Adjust path as needed
 
 interface TopBarProps {

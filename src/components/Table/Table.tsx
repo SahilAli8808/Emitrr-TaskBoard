@@ -3,7 +3,7 @@ import { FaArrowDownWideShort, FaArrowUpShortWide } from "react-icons/fa6";
 import { PiArrowsDownUpBold } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import * as Tooltip from "@radix-ui/react-tooltip";
-import Loader, { Loader2 } from "../Loader";
+import { Loader2 } from "../Loader";
 import { useSearch, usePagination, useSorting } from "./tableFunctions";
 import Pagination from "./Pagination";
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Breadcrumbs from '../components/Breadcrumb';
 import { RiHome2Line } from 'react-icons/ri';
 import DashboardCard from '../components/DashboardCard';
