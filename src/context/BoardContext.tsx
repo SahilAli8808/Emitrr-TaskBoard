@@ -10,6 +10,7 @@ interface BoardContextType {
   updateTask: (colId: string, task: Task) => void;
   moveTask: (fromColId: string, toColId: string, taskId: string, newIndex: number) => void;
   deleteTask: (colId: string, taskId: string) => void;
+  updateColumn: (colId: string, name: string) => void;
 }
 
 const BoardContext = createContext<BoardContextType | undefined>(undefined);
@@ -133,6 +134,16 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
   };
 
+  const updateColumn = (colId: string, name: string) => {
+    if (!board) return;
+    persistBoard({
+      ...board,
+      columns: (board.columns ?? []).map(c =>
+        c.id === colId ? { ...c, name } : c
+      ),
+    });
+  };
+
   return (
     <BoardContext.Provider
       value={{
@@ -144,6 +155,7 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         updateTask,
         moveTask,
         deleteTask,
+        updateColumn,
       }}
     >
       {children}

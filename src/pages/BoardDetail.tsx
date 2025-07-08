@@ -494,7 +494,7 @@ const BoardDetail: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+                  className="bg-yellow-400 text-white px-4 py-2 rounded-md hover:bg-yellow-500 transition"
                 >
                   Save Changes
                 </button>
