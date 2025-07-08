@@ -111,13 +111,13 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
   }, [board, persistBoard]);
 
-  const addTask = useCallback((colId: string, t: Omit<Task, "id" | "createdBy">) => {
+  const addTask = useCallback((colId: string, t: Omit<Task, "id" >) => {
     if (!board) return;
     console.log('addTask: Adding task to column', colId, 'in board', board.id);
     const newTask: Task = {
       ...t,
       id: Date.now().toString(),
-      createdBy: "Emitrr",
+      // createdBy: "Emitrr",
     };
     persistBoard({
       ...board,

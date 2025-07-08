@@ -8,12 +8,13 @@ import { Plus, Search, Calendar, Filter } from "lucide-react";
 import Modal from "../components/Modal/Modal";
 import { TaskModalContent } from "../components/Modal/TaskModal";
 import * as Dialog from '@radix-ui/react-dialog';
-import { Cross1Icon } from '@radix-ui/react-icons';
+import { CalendarIcon, Cross1Icon } from '@radix-ui/react-icons';
+import { Avatar, Badge } from "@radix-ui/themes";
 
 const priorityColors: Record<Priority, string> = {
-  high: "text-red-600",
-  medium: "text-yellow-500",
-  low: "text-green-600",
+  high: "red",
+  medium: "yellow",
+  low: "green",
 };
 
 interface TaskData {
@@ -366,18 +367,38 @@ const BoardDetail: React.FC = () => {
                     </div>
                   </div>
                   <p className="text-sm text-gray-600 mb-3 leading-relaxed">
-                    {task.description}
-                  </p>
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className={`font-medium ${priorityColors[task.priority]}`}>
-                      {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
-                    </span>
-                    {task.dueDate && (
-                      <span className="text-gray-500">
-                        Due: {new Date(task.dueDate).toLocaleDateString()}
-                      </span>
-                    )}
-                  </div>
+  {task.description}
+</p>
+<div className="flex items-center flex-wrap gap-3 text-xs text-gray-500">
+  <Badge color={priorityColors[task.priority]}>
+    {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+  </Badge>
+
+  {task.dueDate && (
+    <div className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full">
+      <CalendarIcon className="w-3.5 h-3.5 text-blue-500" />
+      <span className="font-medium text-gray-700">
+        {new Date(task.dueDate).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })}
+      </span>
+    </div>
+  )}
+
+  {task.createdBy && (
+    <div >
+      <Avatar
+        size="1"
+        radius="full"
+        fallback={task.createdBy?.charAt(0).toUpperCase()}
+      />
+      <span className="text-gray-700 font-medium"> {task.createdBy}</span>
+     </div>
+  )}
+</div>
+
                 </div>
               ))}
             </div>

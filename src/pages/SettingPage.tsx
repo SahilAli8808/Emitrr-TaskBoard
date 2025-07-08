@@ -1,47 +1,39 @@
-import  { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Breadcrumbs from '../components/Breadcrumb';
 import { RiHome2Line } from 'react-icons/ri';
-import DashboardCard from '../components/DashboardCard';
-import { FiSettings } from 'react-icons/fi';
-import { useBoard } from '../context/BoardContext';
+import toast from 'react-hot-toast';
 
 function Settings() {
-  const { board, boards, loadBoard } = useBoard();
-
-  // Load a default board if none is selected
-  useEffect(() => {
-    if (boards.length > 0 && !board) {
-      loadBoard(boards[0].id);
-    }
-  }, [boards, board, loadBoard]);
-
-  // Calculate number of boards created by user
-  const dashData = {
-    userBoards: boards.filter((b: any) =>
-      b.columns?.some((c: any) => c.tasks?.some((t: any) => t.createdBy === 'Emitrr')) || false
-    ).length,
-  };
-
   const breadcrumbsItems = [
     { text: 'Home', link: '/', icon: <RiHome2Line /> },
     { text: 'Settings' },
   ];
 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Load user from localStorage
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    if (storedUser.name && storedUser.email) {
+      setName(storedUser.name);
+      setEmail(storedUser.email);
+      setIsSaved(true);
+    }
+  }, []);
+
+  const handleSave = () => {
+    const user = { name, email };
+    localStorage.setItem('user', JSON.stringify(user));
+    toast.success("User Details Saved Successfully!")
+    setIsSaved(true);
+  };
+
   return (
     <div className="flex flex-col pt-16 p-4">
       <Breadcrumbs items={breadcrumbsItems} />
-      <div className="flex flex-wrap m-3">
-        <DashboardCard
-          loading={false}
-          bgColor="#0073B7"
-          icon={<FiSettings />}
-          value="Your Boards"
-          additionalField={dashData.userBoards}
-          description="No. of Boards with Your Tasks"
-        />
-      </div>
       <div className="px-6 py-4">
-        <h4 className="text-2xl font-bold text-gray-800 mb-4">Settings</h4>
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h5 className="text-lg font-semibold text-gray-800 mb-4">Profile Settings</h5>
           <form className="space-y-4">
@@ -52,9 +44,11 @@ function Settings() {
               <input
                 type="text"
                 id="name"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="mt-1 py-1 pl-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="Enter your name"
-                disabled
+                disabled={isSaved}
               />
             </div>
             <div>
@@ -64,23 +58,26 @@ function Settings() {
               <input
                 type="email"
                 id="email"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="my-2  py-1 pl-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="Enter your email"
-                disabled
+                disabled={isSaved}
               />
             </div>
             <div>
               <button
                 type="button"
+                onClick={handleSave}
                 className="bg-yellow-400 text-gray-800 px-4 py-2 rounded-md text-sm hover:bg-yellow-300 shadow-md"
-                disabled
+                disabled={isSaved || !name || !email}
               >
                 Save Changes
               </button>
             </div>
           </form>
           <p className="mt-4 text-sm text-gray-500">
-            Settings are currently disabled. Contact support to update your profile.
+            Save your name and email. Once saved, the fields will be disabled.
           </p>
         </div>
       </div>

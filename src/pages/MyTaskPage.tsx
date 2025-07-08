@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Breadcrumbs from '../components/Breadcrumb';
 import { RiHome2Line } from 'react-icons/ri';
 import DashboardCard from '../components/DashboardCard';
@@ -6,9 +6,21 @@ import { GoTasklist } from 'react-icons/go';
 import { MdPending } from 'react-icons/md';
 import Table from '../components/Table/Table';
 import { useBoard } from '../context/BoardContext';
+import type { Board, Task } from '../types/board';
+import { HiChevronDown } from 'react-icons/hi';
+
+interface TableProps {
+  rows: any[];
+  headers: { title: string; accessor: string }[];
+  loading: boolean;
+  showPagination: boolean;
+  showSearch: boolean;
+  top?: null | React.ReactNode; // Fix: Added top prop
+}
 
 function MyTasks() {
   const { board, boards, loadBoard } = useBoard();
+  const [selectedUser, setSelectedUser] = useState<string>('All Users');
 
   // Load a default board if none is selected
   useEffect(() => {
@@ -17,16 +29,31 @@ function MyTasks() {
     }
   }, [boards, board, loadBoard]);
 
-  // Calculate user's tasks and tasks due soon
-  const userTasks = boards.flatMap((b: any) =>
-    b.columns?.flatMap((c: any) =>
-      c.tasks?.filter((t: any) => t.createdBy === 'Emitrr').map((t: any) => ({
-        ...t,
-        boardName: b.name,
-      })) || []
-    ) || []
-  );
+  // Get unique createdBy users
+  const uniqueUsers = Array.from(
+    new Set(
+      boards.flatMap((b: Board) =>
+        (b.columns || []).flatMap((c) => c.tasks.map((t: Task) => t.createdBy))
+      )
+    )
+  ).filter((user): user is string => !!user);
 
+  // Calculate user's tasks
+  const userTasks = boards
+    .flatMap((b: Board) =>
+      (b.columns || []).flatMap((c) =>
+        c.tasks
+          .filter((t: Task) =>
+            selectedUser === 'All Users' ? true : t.createdBy === selectedUser
+          )
+          .map((t: Task) => ({
+            ...t,
+            boardName: b.name,
+          }))
+      )
+    );
+
+  // Calculate tasks due soon
   const dueSoonTasks = userTasks.filter((task: any) => {
     const dueDate = new Date(task.dueDate);
     const today = new Date();
@@ -35,8 +62,8 @@ function MyTasks() {
   });
 
   const dashData = {
-    totalTasks: userTasks.length,
-    dueSoonTasks: dueSoonTasks.length,
+    totalTasks: userTasks.length.toString(), // Fix: Convert to string
+    dueSoonTasks: dueSoonTasks.length.toString(), // Fix: Convert to string
   };
 
   const breadcrumbsItems = [
@@ -55,6 +82,32 @@ function MyTasks() {
   return (
     <div className="flex flex-col pt-16 p-4">
       <Breadcrumbs items={breadcrumbsItems} />
+      <hr className='mb-4 border-dotted'></hr>
+<div className="flex justify-between items-center mb-1 px-6">
+  <h4 className="text-3xl font-semibold text-gray-800 tracking-tight">📋 Your Tasks</h4>
+
+ <div className="relative flex items-center gap-2 w-80">
+      <label className="text-sm font-medium text-gray-600 whitespace-nowrap">
+      Filter Tasks by User:
+    </label>
+    <select
+      value={selectedUser}
+      onChange={(e) => setSelectedUser(e.target.value)}
+      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 pr-10 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm hover:bg-gray-100 transition-all duration-200 appearance-none"
+    >
+      <option value="All Users">All Users</option>
+      {uniqueUsers.map((user) => (
+        <option key={user} value={user}>
+          {user}
+        </option>
+      ))}
+    </select>
+    <div className="absolute inset-y-0 right-3 top-7 flex items-center pointer-events-none">
+      <HiChevronDown className="w-4 h-4 text-gray-400 mb-6" />
+    </div>
+  </div>
+</div>
+
       <div className="flex flex-wrap m-3">
         <DashboardCard
           loading={false}
@@ -74,16 +127,13 @@ function MyTasks() {
         />
       </div>
       <div className="px-6 py-4">
-        <h4 className="text-2xl font-bold text-gray-800 mb-4">My Tasks</h4>
         {userTasks.length === 0 ? (
-          <p className="text-gray-600">No tasks assigned to you.</p>
+          <p className="text-gray-600">No tasks assigned to {selectedUser === 'All Users' ? 'any user' : selectedUser}.</p>
         ) : (
           <Table
             rows={userTasks}
             headers={headers}
-            // top={null}
             loading={false}
-            // rowPath="/tasks"
             showPagination={true}
             showSearch={true}
           />

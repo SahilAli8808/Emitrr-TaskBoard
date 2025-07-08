@@ -52,11 +52,11 @@ const Sidebar: React.FC = () => {
   const NavMenu: MenuItem[] = [
     { title: "Dashboard", path: '/', icon: <RxDashboard /> },
     { title: "My Tasks", path: '/mytask', icon: <BiTask/> },
-    { title: "Settings", path: '/Setting', icon: <FiSettings /> },
+    // { title: "Settings", path: '/Setting', icon: <FiSettings /> },
   ];
 
   const MastersMenu: MenuItem[] = [
-    { title: "General Settings", path: '/profile', icon: <FaStreetView /> }
+    { title: "General Settings", path: '/Setting', icon: <FaStreetView /> }
   ];
 
   const MenuList: React.FC<MenuListProps> = ({ list, listTitle }) => (
