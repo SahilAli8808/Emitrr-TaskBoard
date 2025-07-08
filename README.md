@@ -12,7 +12,9 @@ The landing view where you can see task statistics and navigate easily.
 
 ---
 
-## 📋 Board Management
+Here's the fixed and more polished version of that text:
+
+## 📋 Board Table with Pagination, Advanced Search, and Entry Limit Options
 
 Create, edit, or delete boards and manage them in a clean tabular interface.
 
