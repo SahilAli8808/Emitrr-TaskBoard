@@ -81,7 +81,7 @@ function MyTasks() {
           <Table
             rows={userTasks}
             headers={headers}
-            top={null}
+            // top={null}
             loading={false}
             rowPath="/tasks"
             showPagination={true}

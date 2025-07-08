@@ -96,7 +96,7 @@ const BoardView: React.FC = () => {
           rows={formattedBoards}
           headers={headers}
           actions={actions}
-          top={null}
+          // top={null}
           loading={false}
           rowPath="/boards"
           showPagination={true}

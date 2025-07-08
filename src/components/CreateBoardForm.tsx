@@ -9,7 +9,7 @@ const CreateBoardForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
-    addBoard({ name, description });
+    addBoard(name, description);
     setName("");
     setDescription("");
   };
