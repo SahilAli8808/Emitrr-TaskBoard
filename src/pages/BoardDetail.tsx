@@ -20,6 +20,7 @@ const priorityColors: Record<Priority, string> = {
 interface TaskData {
   title: string;
   description: string;
+  createdBy: string;
   priority: Priority;
   dueDate: string;
 }
