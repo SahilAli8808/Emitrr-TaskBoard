@@ -25,10 +25,26 @@ const BoardView: React.FC = () => {
     setModalOpen(false);
   };
 
+  // Format board data for table, including formatted date and total tasks
+  const formattedBoards = boards.map((board: any) => ({
+    ...board,
+    createdAt: new Date(board.createdAt).toLocaleString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    }),
+    totalTasks: board.columns?.reduce((acc: number, column: any) => 
+      acc + (column.tasks?.length || 0), 0) || 0,
+  }));
+
   const headers = [
     { title: "Board Name", accessor: "name" },
     { title: "Description", accessor: "description" },
     { title: "Created At", accessor: "createdAt" },
+    { title: "Total Tasks", accessor: "totalTasks" },
   ];
 
   return (
@@ -59,7 +75,7 @@ const BoardView: React.FC = () => {
         <EmptyBoardState onCreateBoardClick={handleCreateBoard} />
       ) : (
         <Table
-          rows={boards}
+          rows={formattedBoards}
           headers={headers}
           top={null}
           loading={false}
