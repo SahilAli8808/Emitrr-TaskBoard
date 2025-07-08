@@ -1,53 +1,98 @@
-# TaskBoard: Kanban Task Management
-THis TaskBoard is for managing tasks and projects. It features real-time updates, drag-and-drop task management, and Advanced filtering/sorting capabilities.
+# TaskBoard – Kanban Task Management
 
-## Screenshot
-![TaskMaster Dashboard](screenshots/dashboard.png)
+THis TaskBoard is for managing tasks and projects. It features real-time updates, drag-and-drop task management, and Advanced filtering/sorting capabilities 🎯
+
+---
+
+## 🖼️ Dashboard
+
+The landing view where you can see task statistics and navigate easily.
+
+![Dashboard](https://github.com/SahilAli8808/Emitrr-TaskBoard/blob/main/Screenshots/image.png)
+
+---
+
+## 📋 Board Management
+
+Create, edit, or delete boards and manage them in a clean tabular interface.
+
+![Board Management](https://github.com/SahilAli8808/Emitrr-TaskBoard/blob/main/Screenshots/image2.png)
+
+---
+
+## 📌 Drag-and-Drop Tasks
+
+Drag and drop tasks across columns and boards—smooth and real-time.
+
+![Drag and Drop](https://github.com/SahilAli8808/Emitrr-TaskBoard/blob/main/Screenshots/image8.png)
+
+---
+
+## ⚡ Real-Time Updates
+
+Built with `BoardContext` and local storage for instant UI sync.
+
+![Real Time](https://github.com/SahilAli8808/Emitrr-TaskBoard/blob/main/Screenshots/image4.png)
+
+---
+
+## 🔍 Filters & Sorting
+
+Filter tasks by priority or due date and sort columns for better focus.
+
+![Filter and Sort](https://github.com/SahilAli8808/Emitrr-TaskBoard/blob/main/Screenshots/image6.png)
+
+---
+
+## 👤 Add Task 
+
+Add Task Easily and efficiantly using Modal.
+
+![My Tasks](https://github.com/SahilAli8808/Emitrr-TaskBoard/blob/main/Screenshots/image5.png)
+
+---
 
 
-## Features
-- Create, edit, delete boards and tasks
-- Drag-and-drop tasks within/across columns
-- Real-time updates with `BoardContext` and local storage
-- Filter tasks by priority/date, sort boards by columns
-- Responsive UI with modals and toast notifications
-- My Tasks page for user-assigned tasks
-- Settings page for user profile (placeholder)
+## 🛠️ Tech Stack
 
-## Tech Stack
-- **Frontend**: React, TypeScript, Tailwind CSS, React Router, React Icons
-- **State Management**: Custom `BoardContext`
-- **Build Tool**: Vite
+* **Frontend**: React, TypeScript, Tailwind CSS
+* **Routing**: React Router
+* **Icons**: React Icons
+* **State Management**: Custom `BoardContext`
+* **Build Tool**: Vite
 
+---
 
-## Installation
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/SahilAli8808/Emitrr-TaskBoard
-   cd taskmaster
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the app:
-   ```bash
-   npm run dev
-   ```
-   Open `http://localhost:5173`.
+## ⚙️ Installation
 
-## Usage
-- **Dashboard**: View board/task metrics, navigate to boards.
-- **Board View**: Manage boards (create/delete) in a table.
-- **Board Detail**: Drag/drop tasks, add/edit/delete tasks/columns.
-- **My Tasks**: View user tasks with due-soon filter.
-- **Settings**: View user-related board count (placeholder).
+```bash
+git clone https://github.com/SahilAli8808/Emitrr-TaskBoard
+cd Emitrr-TaskBoard
+npm install
+npm run dev
+```
 
+Open `http://localhost:5173` in your browser.
 
-## Evaluation Notes
-- **Code Quality**: Type-safe, modular, reusable components.
-- **Functionality**: Drag-and-drop, filtering, sorting, and CRUD operations work seamlessly.
-- **Performance**: Optimized with context and local storage.
-- **UI/UX**: Responsive, intuitive, with clear feedback.
-- **Scalability**: Ready for backend integration (e.g., MongoDB).
+---
+
+## 🎯 Features at a Glance
+
+✅ Create, edit, and delete boards and tasks
+✅ Drag-and-drop across columns
+✅ Instant updates via Context API
+✅ Advanced filtering/sorting
+✅ Responsive layout with toast alerts
+✅ "My Tasks" and "Settings" pages
+
+---
+
+## 🧪 Evaluation Highlights
+
+* **Code**: Type-safe, modular, and clean
+* **Functionality**: Smooth CRUD and DnD
+* **Performance**: Context-based, minimal re-renders
+* **UX**: Responsive, animated, and intuitive
+* **Scalable**: Easy to plug in a backend like MongoDB
+
 
