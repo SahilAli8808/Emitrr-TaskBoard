@@ -83,7 +83,7 @@ function MyTasks() {
             headers={headers}
             // top={null}
             loading={false}
-            rowPath="/tasks"
+            // rowPath="/tasks"
             showPagination={true}
             showSearch={true}
           />
