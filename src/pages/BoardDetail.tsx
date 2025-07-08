@@ -8,6 +8,9 @@ import { BiEdit } from "react-icons/bi";
 import { Plus, Search, Calendar, Filter } from "lucide-react";
 import Modal from "../components/Modal/Modal";
 import { TaskModalContent } from "../components/Modal/TaskModal";
+// import React, { useState, FormEvent } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import { Cross1Icon } from '@radix-ui/react-icons';
 
 const priorityColors: Record<Priority, string> = {
   high: "text-red-600",
@@ -34,6 +37,9 @@ const BoardDetail: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalColumnId, setModalColumnId] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+const [isSectionModalOpen, setIsSectionModalOpen] = useState(false);
+const [newSectionName, setNewSectionName] = useState('');
 
   useEffect(() => {
     if (id) loadBoard(id);
@@ -59,20 +65,27 @@ const BoardDetail: React.FC = () => {
     return { ...col, tasks: filteredTasks };
   });
 
-  const handleCreateColumn = () => {
-    const name = prompt("Section name");
-    if (name) addColumn(name);
-  };
+ const handleCreateColumn = () => {
+  setNewSectionName('');
+  setIsSectionModalOpen(true);
+};
+
+const handleSectionSubmit = (e: FormEvent) => {
+  e.preventDefault();
+  if (newSectionName.trim()) {
+    addColumn(newSectionName);
+    setIsSectionModalOpen(false);
+  }
+};
+
 
   const handleAddTask = (col: Column) => {
-    const title = prompt("Title");
-    const desc = prompt("Description") || "";
-    const priority = prompt("Priority (high,medium,low)") as Priority;
-    const dueDate = prompt("Due date (YYYY-MM-DD)");
-    if (title && priority && dueDate) {
-      addTask(col.id, { title, description: desc, priority, dueDate });
-    }
-  };
+  setModalColumnId(col.id);
+  setIsTaskModalOpen(true);
+};
+
+
+
 
   const handleEditColumn = (id: string, currentName: string) => {
     const newName = prompt("Edit section name", currentName);
@@ -101,10 +114,12 @@ const BoardDetail: React.FC = () => {
     setDragOverColumn(null);
   };
 
-  const handleTaskSubmit = () => {
-    // Placeholder if you plan to use modal
-    setShowModal(false);
-  };
+  const handleTaskSubmit = (data: TaskData) => {
+  if (modalColumnId) {
+    addTask(modalColumnId, data);
+    setIsTaskModalOpen(false);
+  }
+};
 
   const onDragEnd = (result: any) => {
     const { source, destination } = result;
@@ -302,9 +317,40 @@ const BoardDetail: React.FC = () => {
       </DragDropContext>
 
       {/* Task Modal */}
-      <Modal open={showModal} onOpenChange={setShowModal}>
-        <TaskModalContent title="Add Task" onSubmit={handleTaskSubmit} />
-      </Modal>
+    <Modal open={isTaskModalOpen} onOpenChange={setIsTaskModalOpen}>
+  <TaskModalContent title="Add Task" onSubmit={handleTaskSubmit} />
+</Modal>
+
+{/* Add Section Modal */}
+<Modal open={isSectionModalOpen} onOpenChange={setIsSectionModalOpen}>
+  <Dialog.Portal>
+    <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+    <Dialog.Content className="fixed top-1/2 left-1/2 w-[90vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-md bg-white p-6 shadow-lg">
+      <div className="flex justify-between items-center mb-4">
+        <Dialog.Title className="text-xl font-semibold">Add Section</Dialog.Title>
+        <Dialog.Close className="text-gray-400 hover:text-gray-500">
+          <Cross1Icon />
+        </Dialog.Close>
+      </div>
+      <form onSubmit={handleSectionSubmit} className="flex flex-col gap-4">
+        <input
+          type="text"
+          placeholder="Section Name"
+          value={newSectionName}
+          onChange={(e) => setNewSectionName(e.target.value)}
+          className="border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500"
+          required
+        />
+        <button
+          type="submit"
+          className="bg-yellow-400 text-white py-2 rounded-md hover:bg-yellow-500 transition"
+        >
+          Add Section
+        </button>
+      </form>
+    </Dialog.Content>
+  </Dialog.Portal>
+</Modal>
     </div>
   );
 };
