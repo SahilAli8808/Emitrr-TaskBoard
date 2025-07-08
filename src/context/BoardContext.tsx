@@ -6,6 +6,7 @@ interface BoardContextType {
   boards: Board[];
   loadBoard: (id: string) => void;
   addBoard: (name: string, description: string) => void;
+  deleteBoard: (id: string) => void;
   addColumn: (name: string) => void;
   deleteColumn: (colId: string) => void;
   addTask: (colId: string, task: Omit<Task, "id" | "createdBy">) => void;
@@ -43,7 +44,15 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
     const updatedBoards = [...boards, newBoard];
     persistBoards(updatedBoards);
-    setBoard(newBoard); // Optionally set the new board as the active board
+    setBoard(newBoard);
+  };
+
+  const deleteBoard = (id: string) => {
+    const updatedBoards = boards.filter(b => b.id !== id);
+    persistBoards(updatedBoards);
+    if (board?.id === id) {
+      setBoard(updatedBoards[0] || undefined); // Set first board or undefined if none left
+    }
   };
 
   const persistBoard = (updated: Board) => {
@@ -175,6 +184,7 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         boards,
         loadBoard,
         addBoard,
+        deleteBoard,
         addColumn,
         deleteColumn,
         addTask,

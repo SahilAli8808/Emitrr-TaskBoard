@@ -8,6 +8,8 @@ import {createBrowserRouter,  RouterProvider,} from "react-router-dom";
 import Dashboard from './pages/Dashboard.js';
 import BoardPage from './pages/BoardPage.js';
 import { BoardProvider } from './context/BoardContext.js';
+import MyTasks from './pages/MyTaskPage.js';
+import Settings from './pages/SettingPage.js';
 
 
 
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Dashboard/>,
+      },
+      {
+        path: "/mytask",
+        element: <MyTasks/>,
+      },
+      {
+        path: "/Setting",
+        element: <Settings/>,
       },
       { path: "/boards/:id", element: <BoardPage/> } 
     ]
