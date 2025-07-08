@@ -370,7 +370,8 @@ const BoardDetail: React.FC = () => {
   {task.description}
 </p>
 <div className="flex items-center flex-wrap gap-3 text-xs text-gray-500">
-  <Badge color={priorityColors[task.priority]}>
+  <Badge color={priorityColors[task.priority]  as 
+  "red" | "yellow" | "green"}>
     {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
   </Badge>
 
