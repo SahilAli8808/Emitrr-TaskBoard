@@ -2,8 +2,7 @@ import React, { useEffect, useState, FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import { useBoard } from "../context/BoardContext";
 import type { Column, Task, Priority } from "../types/board";
-import { RiDeleteBin2Line } from "react-icons/ri";
-import { BiEdit } from "react-icons/bi";
+import {  RiDeleteBin6Line, RiEditBoxLine } from "react-icons/ri";
 import { Plus, Search, Calendar, Filter } from "lucide-react";
 import Modal from "../components/Modal/Modal";
 import { TaskModalContent } from "../components/Modal/TaskModal";
@@ -172,8 +171,11 @@ const BoardDetail: React.FC = () => {
   };
 
   return (
-    <div className="p-6 m-4 min-h-screen">
-      <h1 className="text-xl font-bold mb-6 text-gray-800">{board.name}</h1>
+    <div className="p-6 mt-0 min-h-screen">
+      <h1 className="text-xl font-bold mb-2 text-gray-800">Board : {board.name}</h1>
+{board.description && (
+  <p className="text-gray-600 mb-2">{board.description}</p>
+)}
 
       <div className="flex gap-4 mb-6 items-center flex-wrap bg-white p-4 rounded-lg shadow-sm">
         {/* Search */}
@@ -242,26 +244,31 @@ const BoardDetail: React.FC = () => {
           >
             {/* Column Header */}
             <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="font-semibold text-lg text-gray-800">{col.name}</h2>
+              <h2 className="font-semibold text-lg text-gray-800">{col.name} <span className="text-sm text-gray-500">({col.tasks.length})</span>
+</h2>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEditColumn(col)}
                   className="text-blue-500 hover:text-blue-700 p-1 rounded hover:bg-blue-50"
                 >
-                  <BiEdit />
+                                         <RiEditBoxLine />
+
                 </button>
                 <button
                   onClick={() => deleteColumn(col.id)}
                   className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50"
                 >
-                  <RiDeleteBin2Line />
+                  <RiDeleteBin6Line />
                 </button>
               </div>
             </div>
 
             {/* Task List */}
             <div className="p-4 space-y-3 min-h-[200px]">
-              {col.tasks.map((task, idx) => (
+             {col.tasks.length === 0 ? (
+  <p className="text-sm text-center text-gray-400">No tasks</p>
+) : (
+  col.tasks.map((task, idx) => (
                 <div
                   key={task.id}
                   draggable
@@ -300,7 +307,7 @@ const BoardDetail: React.FC = () => {
                         }}
                         className="text-blue-600 hover:text-blue-800 px-2 py-1 rounded hover:bg-blue-50"
                       >
-                        <BiEdit />
+                        <RiEditBoxLine />
                       </button>
                       <button
                         onClick={(e) => {
@@ -309,7 +316,7 @@ const BoardDetail: React.FC = () => {
                         }}
                         className="text-red-500 hover:text-red-700 px-2 py-1 rounded hover:bg-red-50"
                       >
-                        <RiDeleteBin2Line />
+                        <RiDeleteBin6Line />
                       </button>
                     </div>
                   </div>
@@ -327,7 +334,7 @@ const BoardDetail: React.FC = () => {
                     )}
                   </div>
                 </div>
-              ))}
+              )))}
             </div>
 
             {/* Add Task */}
