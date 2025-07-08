@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FormEvent, useCallback } from "react";
+import React, { useEffect, useState, type FormEvent, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useBoard } from "../context/BoardContext";
 import type { Column, Task, Priority } from "../types/board";

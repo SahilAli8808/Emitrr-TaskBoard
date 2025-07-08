@@ -6,7 +6,7 @@ interface DashboardCardProps {
   icon: any;
   value: string | number;
   description: string;
-  additionalField?: string;
+  additionalField?: any;
   loading?: boolean;
 }
 

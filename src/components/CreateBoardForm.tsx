@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useBoardContext } from "../context/BoardContext";
+import { useBoard } from '../context/BoardContext'
 
 const CreateBoardForm: React.FC = () => {
-  const { addBoard } = useBoardContext();
+  const { addBoard } = useBoard();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 

@@ -21,7 +21,7 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ pagination, rows, i, query }) => {
+const Pagination: React.FC<PaginationProps> = ({ pagination, rows, query }) => {
   const { currPage, setCurrPage, pages, pageNumbers, prevPage, nextPage, topIndex, bottomIndex } = pagination;
 
   if (pages <= 1 || query !== '') return null;

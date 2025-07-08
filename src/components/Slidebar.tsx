@@ -48,7 +48,6 @@ const Sidebar: React.FC = () => {
     return targetReached;
   };
 
-  const isMobile = useMediaQuery(768);
 
   const NavMenu: MenuItem[] = [
     { title: "Dashboard", path: '/', icon: <RxDashboard /> },
