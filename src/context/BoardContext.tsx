@@ -9,7 +9,7 @@ interface BoardContextType {
   deleteBoard: (id: string) => void;
   addColumn: (name: string) => void;
   deleteColumn: (colId: string) => void;
-  addTask: (colId: string, task: Omit<Task, "id" | "createdBy">) => void;
+  addTask: (colId: string, task: Omit<Task, "id">) => void;
   updateTask: (colId: string, task: Task) => void;
   moveTask: (fromColId: string, toColId: string, taskId: string, newIndex: number) => void;
   deleteTask: (colId: string, taskId: string) => void;
