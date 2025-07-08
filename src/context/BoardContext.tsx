@@ -3,7 +3,9 @@ import type { Board, Column, Task } from "../types/board";
 
 interface BoardContextType {
   board?: Board;
+  boards: Board[];
   loadBoard: (id: string) => void;
+  addBoard: (name: string, description: string) => void;
   addColumn: (name: string) => void;
   deleteColumn: (colId: string) => void;
   addTask: (colId: string, task: Omit<Task, "id" | "createdBy">) => void;
@@ -17,25 +19,47 @@ const BoardContext = createContext<BoardContextType | undefined>(undefined);
 
 export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [board, setBoard] = useState<Board | undefined>();
+  const [boards, setBoards] = useState<Board[]>([]);
 
   useEffect(() => {
     const all = localStorage.getItem("boards");
-    localStorage.setItem("boards", all ?? "[]");
+    const storedBoards = all ? JSON.parse(all) : [];
+    localStorage.setItem("boards", JSON.stringify(storedBoards));
+    setBoards(storedBoards);
   }, []);
 
+  const persistBoards = (updatedBoards: Board[]) => {
+    localStorage.setItem("boards", JSON.stringify(updatedBoards));
+    setBoards(updatedBoards);
+  };
+
+  const addBoard = (name: string, description: string) => {
+    const newBoard: Board = {
+      id: Date.now().toString(),
+      name,
+      description,
+      createdAt: new Date().toISOString(),
+      columns: [],
+    };
+    const updatedBoards = [...boards, newBoard];
+    persistBoards(updatedBoards);
+    setBoard(newBoard); // Optionally set the new board as the active board
+  };
+
   const persistBoard = (updated: Board) => {
-    const allBoards: Board[] = JSON.parse(localStorage.getItem("boards")!);
+    const allBoards: Board[] = JSON.parse(localStorage.getItem("boards") || "[]");
     const other = allBoards.filter(b => b.id !== updated.id);
     const safeBoard = {
       ...updated,
       columns: updated.columns ?? [],
     };
-    localStorage.setItem("boards", JSON.stringify([...other, safeBoard]));
+    const updatedBoards = [...other, safeBoard];
+    persistBoards(updatedBoards);
     setBoard(safeBoard);
   };
 
   const loadBoard = (id: string) => {
-    const allBoards: Board[] = JSON.parse(localStorage.getItem("boards")!);
+    const allBoards: Board[] = JSON.parse(localStorage.getItem("boards") || "[]");
     const found = allBoards.find(b => b.id === id);
     if (found) {
       setBoard({
@@ -148,7 +172,9 @@ export const BoardProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     <BoardContext.Provider
       value={{
         board,
+        boards,
         loadBoard,
+        addBoard,
         addColumn,
         deleteColumn,
         addTask,

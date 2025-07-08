@@ -1,49 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Table from "../components/Table/Table";
 import EmptyBoardState from "../components/EmptyBoardState";
-import { Modal, ModalContent } from '../components/Modal/Modal';
+import { Modal, ModalContent } from "../components/Modal/Modal";
 import toast from "react-hot-toast";
-
-interface Board {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-}
+import { useBoard } from "../context/BoardContext";
 
 const BoardView: React.FC = () => {
-  const [boards, setBoards] = useState<Board[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { boards, addBoard } = useBoard();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState({ name: "", description: "" });
-
-  useEffect(() => {
-    const storedBoards = localStorage.getItem("boards");
-    if (storedBoards) {
-      setBoards(JSON.parse(storedBoards));
-    }
-    // toast.success("hi")
-  }, []);
 
   const handleCreateBoard = () => {
     setModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const newBoard: Board = {
-      id: Date.now().toString(),
-      name: formData.name,
-      description: formData.description,
-      createdAt: new Date().toLocaleString(),
-    };
-
-    const updatedBoards = [...boards, newBoard];
-    setBoards(updatedBoards);
-    localStorage.setItem("boards", JSON.stringify(updatedBoards));
-    toast.success("Board Created Successfully!")
-    
+  const handleSubmit = (data: { name: string; description: string }) => {
+    if (!data.name.trim()) {
+      toast.error("Board name is required!");
+      return;
+    }
+    addBoard(data.name, data.description);
+    toast.success("Board Created Successfully!");
     setFormData({ name: "", description: "" });
     setModalOpen(false);
   };
@@ -71,27 +48,12 @@ const BoardView: React.FC = () => {
         </button>
       </header>
 
-     <Modal open={modalOpen} onOpenChange={setModalOpen}>
-  <ModalContent
-    title="Create New Board"
-    onSubmit={(data) => {
-      const newBoard = {
-        id: Date.now().toString(),
-        name: data.name,
-        description: data.description,
-        createdAt: new Date().toLocaleString(),
-      };
-      const updatedBoards = [...boards, newBoard];
-
-      setBoards(updatedBoards);
-      localStorage.setItem("boards", JSON.stringify(updatedBoards));
-      toast.success("Board Created Successfully!")
-      setFormData({ name: "", description: "" });
-      setModalOpen(false);
-    }}
-  />
-</Modal>
-
+      <Modal open={modalOpen} onOpenChange={setModalOpen}>
+        <ModalContent
+          title="Create New Board"
+          onSubmit={handleSubmit}
+        />
+      </Modal>
 
       {boards.length === 0 ? (
         <EmptyBoardState onCreateBoardClick={handleCreateBoard} />
@@ -100,8 +62,8 @@ const BoardView: React.FC = () => {
           rows={boards}
           headers={headers}
           top={null}
-          loading={loading}
-          rowPath={"/boards"}
+          loading={false}
+          rowPath="/boards"
           showPagination={true}
           showSearch={true}
         />
