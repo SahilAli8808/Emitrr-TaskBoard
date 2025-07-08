@@ -4,9 +4,10 @@ import EmptyBoardState from "../components/EmptyBoardState";
 import { Modal, ModalContent } from "../components/Modal/Modal";
 import toast from "react-hot-toast";
 import { useBoard } from "../context/BoardContext";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const BoardView: React.FC = () => {
-  const { boards, addBoard } = useBoard();
+  const { boards, addBoard, deleteBoard } = useBoard();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState({ name: "", description: "" });
 
@@ -25,26 +26,43 @@ const BoardView: React.FC = () => {
     setModalOpen(false);
   };
 
+  const handleDeleteBoard = (id: string) => {
+    deleteBoard(id);
+    toast.success("Board Deleted Successfully!");
+  };
+
   // Format board data for table, including formatted date and total tasks
-  const formattedBoards = boards.map((board: any) => ({
-    ...board,
-    createdAt: new Date(board.createdAt).toLocaleString('en-US', {
-      month: '2-digit',
-      day: '2-digit',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    }),
-    totalTasks: board.columns?.reduce((acc: number, column: any) => 
-      acc + (column.tasks?.length || 0), 0) || 0,
-  }));
+  const formattedBoards = boards.map((board: any) => {
+    const taskCount = board.columns?.reduce((acc: number, column: any) => 
+      acc + (column.tasks?.length || 0), 0) || 0;
+    return {
+      ...board,
+      createdAt: new Date(board.createdAt).toLocaleString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      }),
+      totalTasks: `${taskCount} ${taskCount === 1 ? 'task' : 'tasks'}`,
+    };
+  });
 
   const headers = [
     { title: "Board Name", accessor: "name" },
     { title: "Description", accessor: "description" },
     { title: "Created At", accessor: "createdAt" },
     { title: "Total Tasks", accessor: "totalTasks" },
+  ];
+
+  const actions = [
+    {
+      label: "Delete",
+      onClick: (row: any) => handleDeleteBoard(row.id),
+      icon: <RiDeleteBin6Line className="text-red-500" />,
+      className: "text-red-500 hover:text-red-700 flex items-center",
+    },
   ];
 
   return (
@@ -77,6 +95,7 @@ const BoardView: React.FC = () => {
         <Table
           rows={formattedBoards}
           headers={headers}
+          actions={actions}
           top={null}
           loading={false}
           rowPath="/boards"

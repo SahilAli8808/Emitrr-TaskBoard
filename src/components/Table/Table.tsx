@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FaArrowDownWideShort, FaArrowUpShortWide } from "react-icons/fa6";
 import { PiArrowsDownUpBold } from "react-icons/pi";
 import { Link } from "react-router-dom";
@@ -7,7 +7,13 @@ import Loader, { Loader2 } from "../Loader";
 import { useSearch, usePagination, useSorting } from "./tableFunctions";
 import Pagination from "./Pagination";
 
-// Types
+type Action = {
+  label: string;
+  onClick: (row: RowType) => void;
+  icon?: React.ReactNode;
+  className?: string;
+};
+
 type HeaderType = {
   accessor: string;
   title: string;
@@ -18,6 +24,7 @@ type RowType = Record<string, any>;
 interface TableProps {
   rows: RowType[];
   headers: HeaderType[];
+  actions?: Action[];
   loading: boolean;
   rowPath?: string;
   showPagination?: boolean;
@@ -27,6 +34,7 @@ interface TableProps {
 const Table: React.FC<TableProps> = ({
   rows,
   headers,
+  actions = [],
   loading,
   rowPath,
   showPagination = true,
@@ -74,6 +82,9 @@ const Table: React.FC<TableProps> = ({
                   </div>
                 </th>
               ))}
+              {actions.length > 0 && (
+                <th className="py-2 px-4 border-b text-xs">Actions</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -101,11 +112,30 @@ const Table: React.FC<TableProps> = ({
                       </td>
                     )
                   )}
+                  {actions.length > 0 && (
+                    <td className="px-4 py-2 whitespace-nowrap">
+                      <div className="flex space-x-2">
+                        {actions.map((action, index) => (
+                          <button
+                            key={index}
+                            onClick={() => action.onClick(row)}
+                            className={`flex items-center space-x-1 text-sm ${action.className || ''}`}
+                          >
+                            {action.icon}
+                            <span>{action.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={headers.length} className="text-center py-6">
+                <td
+                  colSpan={headers.length + (actions.length > 0 ? 1 : 0)}
+                  className="text-center py-6"
+                >
                   <Loader2
                     text="No record found"
                     loadText="Loading Data"
